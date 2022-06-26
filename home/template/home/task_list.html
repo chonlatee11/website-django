@@ -3,8 +3,8 @@
  
  <div class="header-bar">
     <div>
-        <h1>Hello {{request.user|title}}</h1>
-        <h3 style="margin: 0;">You have <i>{{count}}</i> incomplete tasks{{ count|pluralize:"s" }}</h3>
+        <h1>Hello {{request.user|title}} {{colors}}</h1>
+        <h3 style="margin: 0;">You have <i>{{count}} </i> incomplete task{{ count|pluralize:"s" }}</h3>
     </div>
     {% if request.user.is_authenticated %}
     <a href="{% url 'logout' %}">Logout</a>
@@ -13,8 +13,8 @@
     {% endif %}
  </div>
 
- <div #="search-add-wrapper">
-    <form action="" method="GET" style="margin-top: 20px;display: flex;">
+ <div id="search-add-wrapper">
+    <form action="" method="GET" style="margin-top: 20px; display: flex;">
         <input type="text" name="search-area" value="{{search_input}}">
         <input class="button" type="submit" value="Search">
     </form>
@@ -38,8 +38,6 @@
             <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
             {% endif %}
             </div>
-
-        </div>
         {% empty %}
             <h3>No item in list</h3>
         {% endfor %}

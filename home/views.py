@@ -16,9 +16,9 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-#from jmespath import search
 
-from home.models import Task
+from .models import Task
+# from jmespath import search
 # Create your views here.
 
 #def Home(request):
@@ -56,15 +56,15 @@ class TaskList(LoginRequiredMixin, ListView):
 #dont work now
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        #context['colors'] = 'red'
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
-        ##
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
             context['tasks'] = context['tasks'].filter(
                 title__startswith=search_input)
         context['search_input'] = search_input
-        return context
+        return context 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
@@ -75,7 +75,8 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('tasks')
-    def form_invalid(self, form):
+
+    def form_valid(self, form):
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
 
